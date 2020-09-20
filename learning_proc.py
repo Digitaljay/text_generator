@@ -3,19 +3,23 @@ import re
 import codecs
 import shelve
 
+# Получаем пути до всех книг/текстов
 pathes = glob.glob("*.txt")
 for path in pathes:
     print(path)
     text = ''
+
+    # Открываем файл модели
     with shelve.open("models/model") as states:
+        # Проходимся по всем книгам
         with codecs.open(path, 'r', encoding='windows-1251') as text_file:
-            # text_file=open(path)
             for line in text_file:
-                # print(line)
+                # Избавляемся от синтаксиса
                 text += re.sub("[!?]", ".",
                                re.sub("[^абвгдеёжзийклмнопрстуфхцчшщъыьэюя .!?]", '', line.strip().lower())) + " "
-                # text+=line
+            # Разбиваем весь текст на предложения
             text = text.split(".")
+        # Из каждого предложения вытаскиваем биграммы
         for sentence_monolit in text:
             sentence = sentence_monolit.split()
             lenna = len(sentence)
@@ -24,7 +28,3 @@ for path in pathes:
                     states[sentence[word]] = []
                 dicta = states[sentence[word]]
                 states[sentence[word]] = dicta + [sentence[word + 1]]
-    # print(text)
-
-with shelve.open("models/model") as states:
-    print(states["раз"])
