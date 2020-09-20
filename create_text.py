@@ -48,5 +48,5 @@ def create_text(pref="", path="models/model", text_lenn=100):
     return pref + contin
 
 
-result = create_text("Как ты поживаешь? Скоро лето...")
+result = create_text("Ведьмаку заплатите")
 print(result)
